@@ -91,6 +91,6 @@ activate server
 server->>browser: 201 Created
 deactivate server
 
-Note right of browser: Server responds with `{message: "note created"}`
+Note right of browser: Server responds with {message: "note created"}
 
-`
+```
