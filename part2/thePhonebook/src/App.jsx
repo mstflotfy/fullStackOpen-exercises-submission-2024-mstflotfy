@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
-import axios from 'axios'
+import personsService from './services/persons'
 
 
 const App = () => {
@@ -13,14 +13,14 @@ const App = () => {
 
   useEffect(() => {
     console.log('effect')
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        console.log('promise fulfilled')
-        setPersons(response.data)
+    personsService
+      .getAll()
+      .then(returnedPersons => setPersons(returnedPersons))
+      .catch(e => {
+        alert('Failed to import persons :(')
+        console.log('GET Error: ', e)
       })
   }, [])
-  console.log('render', persons.length, 'presons')
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -31,12 +31,12 @@ const App = () => {
     if (persons.some(person => person.name === newName)) {
       alert(`${newName} is already added to phonebook`)
     } else {
-      axios
-        .post('http://localhost:3001/persons', newPerson)
-        .then(response => setPersons(persons.concat(response.data)))
+      personsService
+        .create(newPerson)
+        .then(returnedPerson => setPersons(persons.concat(returnedPerson)))
         .catch(e => {
           alert('Failed to add new person :(')
-          console.log('Failed to add new person :(', e)
+          console.log('POST error: ', e)
         })
     }
 
