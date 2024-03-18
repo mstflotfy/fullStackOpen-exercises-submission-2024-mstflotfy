@@ -24,12 +24,24 @@ const App = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
+
     const newPerson = {
       name: newName,
       number: newNumber
     }
-    if (persons.some(person => person.name === newName)) {
-      alert(`${newName} is already added to phonebook`)
+
+    const personToEdit = persons.find(p => p.name.toLowerCase() === newPerson.name.toLowerCase())
+
+    if (personToEdit) {
+      if (window.confirm(`${personToEdit.name} is already added to phonebook, replace the old number with a new one?`)) {
+        personsService
+          .update(personToEdit.id, newPerson)
+          .then(updatedPerson => setPersons(persons.map(p => p.id !== updatedPerson.id ? p : updatedPerson)))
+          .catch(e => {
+            alert('Failed to updated number :(')
+            console.log('failed to update number', e)
+          })
+      }
     } else {
       personsService
         .create(newPerson)
