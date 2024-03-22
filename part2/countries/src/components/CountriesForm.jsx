@@ -5,7 +5,7 @@ const CountriesForm = ({searchQuery, setSearchQuery, countriesToShow, errorMsg})
      <form>
       <label>Find countries</label>
       <input type='text' value={searchQuery} onChange={(e)=> setSearchQuery(e.target.value)}/>
-      <CountryList countriesToShow={countriesToShow} errorMsg={errorMsg} />
+      <CountryList countriesToShow={countriesToShow} errorMsg={errorMsg} setSearchQuery={setSearchQuery}/>
      </form>
   )
 
