@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from 'react'
-import './App.css'
 import countriesService from './services/countriesService'
 import CountriesForm from './components/CountriesForm'
 
@@ -10,8 +9,8 @@ const App = () => {
 
   const countriesToShow = useMemo(() => {
     return !searchQuery ? [] :
-    countries
-      .filter(country => country.name.common.toLowerCase().includes(searchQuery.toLowerCase()))
+      countries
+        .filter(country => country.name.common.toLowerCase().includes(searchQuery.toLowerCase()))
 
   }, [searchQuery, countries])
 
@@ -32,15 +31,15 @@ const App = () => {
   }, [countriesToShow])
 
 
-  return(
+  return (
     <div>
-     <h1>Data for Countries</h1> 
-     <CountriesForm
-      searchQuery={searchQuery}
-      setSearchQuery={setSearchQuery}
-      countriesToShow={countriesToShow}
-      errorMsg={errorMsg}
-     />
+      <h1>Data for Countries</h1>
+      <CountriesForm
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        countriesToShow={countriesToShow}
+        errorMsg={errorMsg}
+      />
     </div>
 
   )
