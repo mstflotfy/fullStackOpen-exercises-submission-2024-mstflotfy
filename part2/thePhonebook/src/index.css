@@ -1,0 +1,13 @@
+.error {
+  background: lightgray;
+  color: red;
+  border: solid red 0.6rem;
+  padding: 20px;
+  border-radius: 1rem;
+  margin-bottom: 1rem;
+  text-align-last: center;
+}
+
+body {
+  background: ghostwhite;
+}

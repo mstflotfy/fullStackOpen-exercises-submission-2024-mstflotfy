@@ -3,6 +3,7 @@ import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
 import personsService from './services/persons'
+import Notification from './components/Notification'
 
 
 const App = () => {
@@ -10,6 +11,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [nameFilter, setNameFilter] = useState('')
+  const [errorMsg, setErrorMsg] = useState('')
 
   useEffect(() => {
     console.log('effect')
@@ -17,7 +19,7 @@ const App = () => {
       .getAll()
       .then(returnedPersons => setPersons(returnedPersons))
       .catch(e => {
-        alert('Failed to import persons :(')
+        showMsg('Failed to import persons :(')
         console.log('GET Error: ', e)
       })
   }, [])
@@ -38,7 +40,7 @@ const App = () => {
           .update(personToEdit.id, newPerson)
           .then(updatedPerson => setPersons(persons.map(p => p.id !== updatedPerson.id ? p : updatedPerson)))
           .catch(e => {
-            alert('Failed to updated number :(')
+            showMsg('Failed to update number :(')
             console.log('failed to update number', e)
           })
       }
@@ -46,9 +48,9 @@ const App = () => {
       personsService
         .create(newPerson)
         .then(returnedPerson => setPersons(persons.concat(returnedPerson)))
-        .catch(e => {
-          alert('Failed to add new person :(')
-          console.log('POST error: ', e)
+        .catch(error => {
+          showMsg(`${error.response.data.error}`)
+          console.log('POST error: ', error.response.data.error)
         })
     }
 
@@ -73,15 +75,25 @@ const App = () => {
         .remove(person.id)
         .then(deletedPerson => setPersons(persons.filter(p => p.id !== deletedPerson.id)))
         .catch(e => {
+          showMsg(`Failed to delete ${person.name} :(`)
           alert(`Failed to delete ${person.name} :(`)
           console.log('DELETE Error: ', e)
         })
     }
   }
 
+  function showMsg(msg) {
+    setErrorMsg(msg)
+    setTimeout(() => {
+      setErrorMsg('')
+    }, 5000)
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
+
+      <Notification msg={errorMsg} />
 
       <Filter 
         nameFilter={nameFilter} 
